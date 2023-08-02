@@ -7,10 +7,29 @@
 
 using namespace std;
 
-void get_URL( const string& host, const string& path )
-{
-  cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
-  cerr << "Warning: get_URL() has not been implemented yet.\n";
+void get_URL(const string &host, const string &path) {
+    // Your code here.
+    TCPSocket sock{};
+    sock.connect(Address(host,"http"));
+    if(!sock.closed()){
+      cout<<"shutdown"<<endl;
+    }
+    string message = "GET " + path + " HTTP/1.1\r\nHOST: " + host + "\r\n\r\n";
+    sock.write(message);
+    sock.shutdown(SHUT_WR);
+    
+    while( !sock.eof()){
+        string res;
+        //通过 eof 判断是否已经读到了最末尾，若没有则读取继续
+        sock.read(res);
+        cout<<res;
+    }
+    
+    sock.close();
+    return ;
+
+    cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
+    cerr << "Warning: get_URL() has not been implemented yet.\n";
 }
 
 int main( int argc, char* argv[] )
