@@ -1,0 +1,39 @@
+Start testing: Aug 02 21:19 CDT
+----------------------------------------------------------
+9/10 Testing: compile with optimization
+9/10 Test: compile with optimization
+Command: "/usr/local/bin/cmake" "--build" "/home/wtr/Desktop/prog/cs144lab0/minnow-main/minnow-main/build" "-t" "speed_testing"
+Directory: /home/wtr/Desktop/prog/cs144lab0/minnow-main/minnow-main/build
+"compile with optimization" start time: Aug 02 21:19 CDT
+Output:
+----------------------------------------------------------
+make[4]: warning: -j4 forced in submake: resetting jobserver mode.
+[ 30%] Built target minnow_optimized
+[ 80%] Built target util_optimized
+[100%] Built target byte_stream_speed_test
+[100%] Built target speed_testing
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"compile with optimization" end time: Aug 02 21:19 CDT
+"compile with optimization" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/10 Testing: byte_stream_speed_test
+10/10 Test: byte_stream_speed_test
+Command: "/home/wtr/Desktop/prog/cs144lab0/minnow-main/minnow-main/build/tests/byte_stream_speed_test"
+Directory: /home/wtr/Desktop/prog/cs144lab0/minnow-main/minnow-main/build
+"byte_stream_speed_test" start time: Aug 02 21:19 CDT
+Output:
+----------------------------------------------------------
+ByteStream with capacity=32768, write_size=1500, read_size=128 reached 0.49 Gbit/s.
+<end of output>
+Test time =   0.34 sec
+----------------------------------------------------------
+Test Passed.
+"byte_stream_speed_test" end time: Aug 02 21:19 CDT
+"byte_stream_speed_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Aug 02 21:19 CDT
