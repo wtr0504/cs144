@@ -12,11 +12,12 @@ void Writer::push( string data )
     return;
   // Your code here.
   // static_assert(is_end_input==true,"is end");
-  size_t sould_write = data.size();
-  if(sould_write > capacity_ - buf.size()){
-    sould_write = capacity_ - buf.size();
-  }
-  for(size_t i = 0;i<sould_write;i++){
+  uint64_t sould_write  = min(data.size(),capacity_-buf.size());
+  // data = data.substr(0,sould_write);
+  // for( const auto &c : data){
+  //   buf.push_back(c);
+  // }
+  for(uint64_t i = 0;i<sould_write;i++){
     buf.push_back(data[i]);
   }
   written_byte += sould_write;
@@ -44,7 +45,7 @@ bool Writer::is_closed() const
 uint64_t Writer::available_capacity() const
 {
   // Your code here.
-  return capacity_ - written_byte + read_byte;
+  return capacity_ - buf.size();
 }
 
 uint64_t Writer::bytes_pushed() const
@@ -54,10 +55,8 @@ uint64_t Writer::bytes_pushed() const
 }
 
 string_view Reader::peek() const
-{
-  const char* ch = &buf[read_byte];
-  string_view s(ch);
-  return {s};
+{ 
+   return {std::string_view(&buf.front(), 1)};
 }
 
 bool Reader::is_finished() const
@@ -75,11 +74,12 @@ bool Reader::has_error() const
 
 void Reader::pop( uint64_t len )
 {
-   size_t popsize = len < capacity_ ? len : capacity_;
-  // for(size_t i = 0;i<popsize;i++){
-  //   buf.pop_front();
-  // }
-  buf.erase(buf.begin(),buf.begin()+popsize);
+  uint64_t popsize = min(capacity_,len);
+  // buf.erase(buf.begin(),buf.begin()+ popsize);
+  // buf.erase(buf.begin(),buf.begin()+popsize);
+  for(uint64_t i =0;i<popsize;i++){
+    buf.pop_front();
+  }
   read_byte += popsize;
   // buf.shrink_to_fit();
 }

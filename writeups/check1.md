@@ -1,4 +1,4 @@
-Checkpoint 0 Writeup
+Checkpoint 1 Writeup
 ====================
 
 My name: [your name here]
@@ -7,11 +7,18 @@ My SUNet ID: [your sunetid here]
 
 I collaborated with: [list sunetids here]
 
-I would like to credit/thank these classmates for their help: [list sunetids here]
+I would like to thank/reward these classmates for their help: [list sunetids here]
 
 This lab took me about [n] hours to do. I [did/did not] attend the lab session.
 
-My secret code from section 2.1 was: [code here]
+Program Structure and Design of the Reassembler:
+[]
+
+Implementation Challenges:
+[]
+
+Remaining Bugs:
+[]
 
 - Optional: I had unexpected difficulty with: [describe]
 

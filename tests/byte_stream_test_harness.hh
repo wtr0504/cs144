@@ -2,7 +2,7 @@
 
 #include "byte_stream.hh"
 #include "common.hh"
-
+#include <iostream>
 #include <concepts>
 #include <optional>
 #include <utility>

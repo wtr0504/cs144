@@ -1,5 +1,5 @@
 #include "byte_stream.hh"
-
+#include <iostream>
 #include <cstdint>
 #include <stdexcept>
 
@@ -10,7 +10,7 @@
 void read( Reader& reader, uint64_t len, std::string& out )
 {
   out.clear();
-
+  // std::cout<<"read "<<reader.bytes_buffered()<<"readed size "<<reader.bytes_popped()<<std::endl;
   while ( reader.bytes_buffered() and out.size() < len ) {
     auto view = reader.peek();
 
@@ -21,6 +21,7 @@ void read( Reader& reader, uint64_t len, std::string& out )
     view = view.substr( 0, len - out.size() ); // Don't return more bytes than desired.
     out += view;
     reader.pop( view.size() );
+    // std::cout<<"read "<<reader.bytes_buffered()<<"readed size "<<reader.bytes_popped()<<std::endl;
   }
 }
 

@@ -1,3 +1,6 @@
+SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 add_library(minnow_testing_debug STATIC common.cc)
 
 add_library(minnow_testing_sanitized EXCLUDE_FROM_ALL STATIC common.cc)
@@ -37,4 +40,13 @@ add_test_exec(byte_stream_two_writes)
 add_test_exec(byte_stream_many_writes)
 add_test_exec(byte_stream_stress_test)
 
+add_test_exec(reassembler_single)
+add_test_exec(reassembler_cap)
+add_test_exec(reassembler_seq)
+add_test_exec(reassembler_dup)
+add_test_exec(reassembler_holes)
+add_test_exec(reassembler_overlapping)
+add_test_exec(reassembler_win)
+
 add_speed_test(byte_stream_speed_test)
+add_speed_test(reassembler_speed_test)
