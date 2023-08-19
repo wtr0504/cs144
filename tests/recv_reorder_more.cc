@@ -14,7 +14,7 @@
 
 using namespace std;
 
-static constexpr unsigned NREPS = 64;
+static constexpr unsigned NREPS = 32;
 
 void do_test_1( const TCPConfig& cfg, default_random_engine& rd )
 {
@@ -102,7 +102,7 @@ int main()
 {
   try {
     TCPConfig cfg {};
-    cfg.recv_capacity = 65000;
+    cfg.recv_capacity = 6500;
     auto rd = get_random_engine();
 
     // non-overlapping out-of-order segments

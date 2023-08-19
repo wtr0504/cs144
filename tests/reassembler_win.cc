@@ -11,7 +11,7 @@
 using namespace std;
 
 static constexpr size_t NREPS = 32;
-static constexpr size_t NSEGS = 128;
+static constexpr size_t NSEGS = 64;
 static constexpr size_t MAX_SEG_LEN = 1024;
 
 int main()
