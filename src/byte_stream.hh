@@ -1,5 +1,5 @@
 #pragma once
-
+#include<iostream>
 #include <queue>
 #include <stdexcept>
 #include <string>
@@ -53,6 +53,8 @@ public:
 
   uint64_t bytes_buffered() const; // Number of bytes currently buffered (pushed and not popped)
   uint64_t bytes_popped() const;   // Total number of bytes cumulatively popped from stream
+
+  std::string get_string(uint64_t)const;
 };
 
 /*
