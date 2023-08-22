@@ -95,3 +95,11 @@ uint64_t Reader::bytes_popped() const
   // Your code here.
   return {read_byte};
 }
+
+std::string Reader::get_string(uint64_t len)const{
+  std::string str{};
+  for(uint64_t i=0;i<len;i++){
+    str.push_back(buf[i]);
+  }
+  return str;
+}
