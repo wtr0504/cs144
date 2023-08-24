@@ -11,19 +11,50 @@ using namespace std;
 // next_hop: The IP address of the next hop. Will be empty if the network is directly attached to the router (in
 //    which case, the next hop address should be the datagram's final destination).
 // interface_num: The index of the interface to send the datagram out on.
-void Router::add_route( const uint32_t route_prefix,
-                        const uint8_t prefix_length,
-                        const optional<Address> next_hop,
-                        const size_t interface_num )
-{
-  cerr << "DEBUG: adding route " << Address::from_ipv4_numeric( route_prefix ).ip() << "/"
-       << static_cast<int>( prefix_length ) << " => " << ( next_hop.has_value() ? next_hop->ip() : "(direct)" )
-       << " on interface " << interface_num << "\n";
-
-  (void)route_prefix;
-  (void)prefix_length;
-  (void)next_hop;
-  (void)interface_num;
+void Router::add_route(const uint32_t route_prefix, 
+                       const uint8_t prefix_length, 
+                       const optional<Address> next_hop, 
+                       const size_t interface_num 
+) {
+    cerr << "DEBUG: adding route " << Address::from_ipv4_numeric(route_prefix).ip() << "/"
+         << static_cast<int>( prefix_length ) << " => " << (next_hop.has_value() ? next_hop->ip() : "(direct)")
+         << " on interface " << interface_num << "\n";
+    routing_table_.emplace_back(route_t{route_prefix, prefix_length, next_hop, interface_num});
 }
 
-void Router::route() {}
+void Router::route() {
+    for (auto &ani: interfaces_) {
+        while (auto dgram = ani.maybe_receive()) {
+            if (dgram) {
+                auto ip_datagram = dgram.value();
+                if (ip_datagram.header.ttl-- <= 1) continue;
+
+                int8_t max_prefix_length = -1;
+                route_t ans_r{};
+                for (route_t const &r: routing_table_) {
+                    if (r.prefix_length==0){
+                        max_prefix_length = static_cast<int8_t>(r.prefix_length);
+                        ans_r = r;
+                        continue;
+                    }
+                    uint32_t mask = ~0U;
+                    mask <<= static_cast<uint32_t>(32-r.prefix_length);
+
+                    if ((r.route_prefix & mask) == (ip_datagram.header.dst & mask)) {
+                        if (max_prefix_length < r.prefix_length) {
+                            max_prefix_length = static_cast<int8_t>(r.prefix_length);
+                            ans_r = r;
+                        }
+                    }
+                }
+
+                if (max_prefix_length >=0){
+                    
+                    ip_datagram.header.compute_checksum();
+                    AsyncNetworkInterface &out_interface = interface(ans_r.interface_id);
+                    out_interface.send_datagram(ip_datagram, ans_r.next_hop.has_value() ? ans_r.next_hop.value(): Address::from_ipv4_numeric(ip_datagram.header.dst));
+                }
+            }
+        }
+    }
+}

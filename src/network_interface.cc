@@ -71,7 +71,6 @@ optional<InternetDatagram> NetworkInterface::recv_frame( const EthernetFrame& fr
   }
   else if(frame.header.type == EthernetHeader::TYPE_ARP){
     ARPMessage arp_msg;
-    std::cout<<"asda"<<endl;
     if(not parse(arp_msg,frame.payload)){
       return nullopt;
     }
@@ -83,23 +82,18 @@ optional<InternetDatagram> NetworkInterface::recv_frame( const EthernetFrame& fr
       ARP_cache_.insert(std::make_pair(arp_msg.sender_ip_address,ethernet_timer));
       //ARP is request
       if(arp_msg.opcode == ARPMessage::OPCODE_REQUEST ){
-        std::cout<<"wqrtry"<<endl;
         ARPMessage arp_reply_msg ;
         arp_reply_msg.opcode = ARPMessage::OPCODE_REPLY; 
         arp_reply_msg.sender_ethernet_address = ethernet_address_;
         arp_reply_msg.sender_ip_address = ip_address_.ipv4_numeric();
         arp_reply_msg.target_ethernet_address = arp_msg.sender_ethernet_address;
         arp_reply_msg.target_ip_address = arp_msg.sender_ip_address;
-std::cout<<"123325435"<<endl;
         EthernetFrame eth_reply;
         eth_reply.header.dst = arp_msg.sender_ethernet_address;
         eth_reply.header.src = ethernet_address_;
         eth_reply.header.type = EthernetHeader::TYPE_ARP;
-        std::cout<<"123325435"<<endl;
         eth_reply.payload = serialize(arp_reply_msg);
-        std::cout<<"123325435"<<endl;
         ethernet_frame_queue.push(std::move(eth_reply));
-        std::cout<<"123325435"<<endl;
       }
 
     //ARP is reply
