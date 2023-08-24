@@ -5,9 +5,11 @@
 #include "ipv4_datagram.hh"
 
 #include <iostream>
+#include<map>
 #include <list>
 #include <optional>
 #include <queue>
+#include<unordered_map>
 #include <unordered_map>
 #include <utility>
 
@@ -32,6 +34,9 @@
 // the network interface passes it up the stack. If it's an ARP
 // request or reply, the network interface processes the frame
 // and learns or replies as necessary.
+
+
+
 class NetworkInterface
 {
 private:
@@ -41,6 +46,24 @@ private:
   // IP (known as Internet-layer or network-layer) address of the interface
   Address ip_address_;
 
+  const size_t ARP_DEFAULT_TTL = static_cast<size_t>(30*1000);
+  const size_t ARP_REQUEST_DEFAULT_TTL = static_cast<size_t>(5 * 1000);
+
+
+  typedef  struct  EthernetAndTimer
+  {
+    EthernetAddress ethernetAdress;
+    size_t timer = 0;
+  }EthernetAndTimer;
+  std::unordered_map<uint32_t,EthernetAndTimer> ARP_cache_{};
+  std::queue<EthernetFrame> ethernet_frame_queue{};
+
+  std::list<std::pair<Address,InternetDatagram>> internetdatagram_to_send_{};
+
+  std::unordered_map<uint32_t,size_t> arp_request_{};
+
+
+  
 public:
   // Construct a network interface with given Ethernet (network-access-layer) and IP (internet-layer)
   // addresses

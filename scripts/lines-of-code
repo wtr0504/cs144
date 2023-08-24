@@ -20,8 +20,13 @@ modules = [['byte_stream', 'ByteStream'],
            ['tcp_receiver', 'TCPReceiver'],
            ['wrapping_integers', 'Wrap32'],
            ['tcp_sender', 'TCPSender'],
+<<<<<<< HEAD
            ['network_interface', 'NetworkInterface']]
 >>>>>>> origin/check3-startercode
+=======
+           ['network_interface', 'NetworkInterface'],
+           ['router', 'Router']]
+>>>>>>> origin/check5-startercode
 longest_module_length = max([len(x[1]) for x in modules])
 
 

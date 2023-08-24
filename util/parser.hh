@@ -208,6 +208,7 @@ public:
 template<class T>
 std::vector<Buffer> serialize( const T& obj )
 {
+  
   Serializer s;
   obj.serialize( s );
   return s.output();
